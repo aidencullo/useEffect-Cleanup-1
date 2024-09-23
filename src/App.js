@@ -1,45 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
-import { FadeInAnimation } from './animation.js';
+import React, { useRef } from "react";
 
-function Welcome() {
+export default () => {
   const ref = useRef(null);
-
-  useEffect(() => {
-    console.log('Welcome mounted');
-    const animation = new FadeInAnimation(ref.current);
-    animation.start(1000);
-    return () => {
-      console.log('Welcome unmounted');
-      animation.stop();
-    };
-  }, []);
-
+  
   return (
-    <h1
-      ref={ref}
-      style={{
-        opacity: 0,
-        color: 'white',
-        padding: 50,
-        textAlign: 'center',
-        fontSize: 50,
-        backgroundImage: 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
-      }}
-    >
-      Welcome
-    </h1>
+      <dialog
+    open
+    ref={ref}
+      >
+      <p>Greetings, one and all!</p>
+      <form method="dialog">
+      <button onClick={() => ref.current.close()}>Close</button>
+      </form>
+      </dialog>
   );
-}
-
-export default function App() {
-  const [show, setShow] = useState(false);
-  return (
-    <>
-      <button onClick={() => setShow(!show)}>
-        {show ? 'Remove' : 'Show'}
-      </button>
-      <hr />
-      {show && <Welcome />}
-    </>
-  );
-}
+};
