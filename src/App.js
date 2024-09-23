@@ -1,30 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { FadeInAnimation } from './animation.js';
 
-export default function App() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+function Welcome() {
+  const ref = useRef(null);
 
   useEffect(() => {
-    function handleMove(e) {
-      setPosition({ x: e.clientX, y: e.clientY });
-    }
-    window.addEventListener('pointermove', handleMove);
+    console.log('Welcome mounted');
+    const animation = new FadeInAnimation(ref.current);
+    animation.start(1000);
     return () => {
-      window.removeEventListener('pointermove', handleMove);
+      console.log('Welcome unmounted');
+      animation.stop();
     };
   }, []);
 
   return (
-    <div style={{
-      position: 'absolute',
-      backgroundColor: 'pink',
-      borderRadius: '50%',
-      opacity: 0.6,
-      transform: `translate(${position.x}px, ${position.y}px)`,
-      pointerEvents: 'none',
-      left: -20,
-      top: -20,
-      width: 40,
-      height: 40,
-    }} />
+    <h1
+      ref={ref}
+      style={{
+        opacity: 0,
+        color: 'white',
+        padding: 50,
+        textAlign: 'center',
+        fontSize: 50,
+        backgroundImage: 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
+      }}
+    >
+      Welcome
+    </h1>
+  );
+}
+
+export default function App() {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <button onClick={() => setShow(!show)}>
+        {show ? 'Remove' : 'Show'}
+      </button>
+      <hr />
+      {show && <Welcome />}
+    </>
   );
 }
