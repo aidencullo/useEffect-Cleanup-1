@@ -1,17 +1,20 @@
-import React, { useRef } from "react";
+import { useState } from 'react';
+import ModalDialog from './ModalDialog.js';
 
-export default () => {
-  const ref = useRef(null);
-  
+export default function App() {
+  const [show, setShow] = useState(false);
   return (
-      <dialog
-    open
-    ref={ref}
-      >
-      <p>Greetings, one and all!</p>
-      <form method="dialog">
-      <button onClick={() => ref.current.close()}>Close</button>
-      </form>
-      </dialog>
+    <>
+      <button onClick={() => setShow(true)}>
+        Open dialog
+      </button>
+      <ModalDialog isOpen={show}>
+        Hello there!
+        <br />
+        <button onClick={() => {
+          setShow(false);
+        }}>Close</button>
+      </ModalDialog>
+    </>
   );
-};
+}
